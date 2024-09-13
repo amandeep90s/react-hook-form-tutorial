@@ -36,7 +36,15 @@ const YoutubeForm = () => {
       dob: new Date(),
     },
   });
-  const { register, control, handleSubmit, formState, watch, getValues } = form;
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState,
+    watch,
+    getValues,
+    setValue,
+  } = form;
   const { errors } = formState;
 
   const { append, fields, remove } = useFieldArray({
@@ -60,6 +68,14 @@ const YoutubeForm = () => {
     console.log(getValues());
     console.log(getValues('username'));
     console.log(getValues(['social', 'phNumbers']));
+  };
+
+  const handleSetValue = () => {
+    setValue('username', '', {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
   };
 
   return (
@@ -245,6 +261,9 @@ const YoutubeForm = () => {
         <button type='submit'>Submit</button>
         <button type='button' onClick={handleGetValues}>
           Get Values
+        </button>
+        <button type='button' onClick={handleSetValue}>
+          Set Values
         </button>
       </form>
       <DevTool control={control} />
