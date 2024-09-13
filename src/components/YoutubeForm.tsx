@@ -146,6 +146,7 @@ const YoutubeForm = () => {
             id='twitter'
             {...register('social.twitter', {
               required: 'Twitter is required',
+              disabled: !watch('channel'),
             })}
           />
           {errors.social?.twitter && (
