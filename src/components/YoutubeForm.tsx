@@ -36,7 +36,7 @@ const YoutubeForm = () => {
       dob: new Date(),
     },
   });
-  const { register, control, handleSubmit, formState, watch } = form;
+  const { register, control, handleSubmit, formState, watch, getValues } = form;
   const { errors } = formState;
 
   const { append, fields, remove } = useFieldArray({
@@ -55,6 +55,12 @@ const YoutubeForm = () => {
       subscription.unsubscribe();
     };
   }, [watch]);
+
+  const handleGetValues = () => {
+    console.log(getValues());
+    console.log(getValues('username'));
+    console.log(getValues(['social', 'phNumbers']));
+  };
 
   return (
     <div>
@@ -237,6 +243,9 @@ const YoutubeForm = () => {
         </div>
 
         <button type='submit'>Submit</button>
+        <button type='button' onClick={handleGetValues}>
+          Get Values
+        </button>
       </form>
       <DevTool control={control} />
     </div>
