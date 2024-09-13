@@ -1,5 +1,9 @@
 import { DevTool } from '@hookform/devtools';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
+
+type PhoneNumbers = {
+  number: string;
+};
 
 type FormValues = {
   username: string;
@@ -10,6 +14,7 @@ type FormValues = {
     facebook: string;
   };
   phoneNumbers: string[];
+  phNumbers: PhoneNumbers[];
 };
 
 const YoutubeForm = () => {
@@ -23,10 +28,16 @@ const YoutubeForm = () => {
         facebook: '',
       },
       phoneNumbers: ['', ''],
+      phNumbers: [{ number: '' }],
     },
   });
   const { register, control, handleSubmit, formState } = form;
   const { errors } = formState;
+
+  const { append, fields, remove } = useFieldArray({
+    name: 'phNumbers',
+    control,
+  });
 
   const onSubmit = (data: FormValues) => {
     console.log('Form submitted', data);
@@ -145,6 +156,45 @@ const YoutubeForm = () => {
           {errors.phoneNumbers?.[1] && (
             <p className='error'>{errors.phoneNumbers?.[1]?.message}</p>
           )}
+        </div>
+
+        <div>
+          <label htmlFor=''>List of phone numbers</label>
+          <div>
+            {fields.map((field, index) => (
+              <div key={field.id} className='form-control'>
+                <input
+                  type='text'
+                  {...register(`phNumbers.${index}.number` as const, {
+                    required: 'Phone number is required',
+                  })}
+                />
+                {errors.phNumbers?.[index]?.number && (
+                  <p className='error'>
+                    {errors.phNumbers?.[index]?.number?.message}
+                  </p>
+                )}
+
+                {index > 0 && (
+                  <button
+                    type='button'
+                    style={{ marginTop: 15 }}
+                    onClick={() => remove(index)}
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            ))}
+
+            <button
+              type='button'
+              style={{ marginBottom: 15 }}
+              onClick={() => append({ number: '' })}
+            >
+              Add phone number
+            </button>
+          </div>
         </div>
 
         <button type='submit'>Submit</button>
