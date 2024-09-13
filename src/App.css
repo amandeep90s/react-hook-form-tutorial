@@ -31,7 +31,7 @@ input[type="date"] {
 }
 
 .error {
-  color: gold;
+  color: red;
   font-size: 12px;
   margin-bottom: 10px;
   display: flex;
