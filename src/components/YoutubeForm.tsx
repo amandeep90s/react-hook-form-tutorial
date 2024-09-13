@@ -56,15 +56,9 @@ const YoutubeForm = () => {
     };
   }, [watch]);
 
-  // const watchUsername = watch(['username', 'email']);
-
-  // const watchAllFields = watch();
-
   return (
     <div>
       <h2>Youtube Form</h2>
-      {/* <h2>Watched Username: {watchUsername} </h2>
-      <p>{JSON.stringify(watchAllFields)}</p> */}
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className='form-control'>
           <label htmlFor='username'>Username</label>
