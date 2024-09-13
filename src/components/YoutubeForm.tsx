@@ -1,4 +1,5 @@
 import { DevTool } from '@hookform/devtools';
+import { useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
 type PhoneNumbers = {
@@ -15,6 +16,8 @@ type FormValues = {
   };
   phoneNumbers: string[];
   phNumbers: PhoneNumbers[];
+  age: number;
+  dob: Date;
 };
 
 const YoutubeForm = () => {
@@ -29,9 +32,11 @@ const YoutubeForm = () => {
       },
       phoneNumbers: ['', ''],
       phNumbers: [{ number: '' }],
+      age: 0,
+      dob: new Date(),
     },
   });
-  const { register, control, handleSubmit, formState } = form;
+  const { register, control, handleSubmit, formState, watch } = form;
   const { errors } = formState;
 
   const { append, fields, remove } = useFieldArray({
@@ -43,9 +48,23 @@ const YoutubeForm = () => {
     console.log('Form submitted', data);
   };
 
+  useEffect(() => {
+    const subscription = watch((value) => console.log(value));
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [watch]);
+
+  // const watchUsername = watch(['username', 'email']);
+
+  // const watchAllFields = watch();
+
   return (
     <div>
       <h2>Youtube Form</h2>
+      {/* <h2>Watched Username: {watchUsername} </h2>
+      <p>{JSON.stringify(watchAllFields)}</p> */}
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className='form-control'>
           <label htmlFor='username'>Username</label>
@@ -186,6 +205,32 @@ const YoutubeForm = () => {
                 )}
               </div>
             ))}
+
+            <div className='form-control'>
+              <label htmlFor='age'>Age</label>
+              <input
+                type='number'
+                id='age'
+                {...register('age', {
+                  valueAsNumber: true,
+                  required: 'Age is required',
+                })}
+              />
+              {errors.age && <p className='error'>{errors.age.message}</p>}
+            </div>
+
+            <div className='form-control'>
+              <label htmlFor='dob'>Date of Birth</label>
+              <input
+                type='date'
+                id='dob'
+                {...register('dob', {
+                  valueAsDate: true,
+                  required: 'Date of Birth is required',
+                })}
+              />
+              {errors.dob && <p className='error'>{errors.dob.message}</p>}
+            </div>
 
             <button
               type='button'
